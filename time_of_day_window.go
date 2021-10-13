@@ -28,36 +28,7 @@ type TimeOfDayWindow struct {
 // expressed as a negative number). Otherwise, it returns false and the time
 // until the window starts.
 func (w *TimeOfDayWindow) WithinWindow(now time.Time) (bool, time.Duration) {
-	start, end := w.StartTime(now), w.EndTime(now)
-
-	// -----|---------------
-	// ---start-----end-----
-	if now.Equal(start) {
-		return true, 0
-	}
-	// --------------|------
-	// ---start-----end-----
-	if now.Equal(end) {
-		return false, 24 * time.Hour
-	}
-
-	startMinusNow := start.Sub(now)
-
-	// ----------|----------
-	// ---start-----end-----
-	if now.After(start) && now.Before(end) {
-		return true, startMinusNow
-	}
-
-	// ------------------|--
-	// ---start-----end-----
-	if now.After(end) {
-		return false, 24*time.Hour + startMinusNow
-	}
-
-	// -|-------------------
-	// ---start-----end-----
-	return false, startMinusNow
+	return WithinWindow(now, w.StartTime(now), w.EndTime(now))
 }
 
 func (w *TimeOfDayWindow) StartTime(now time.Time) time.Time {
@@ -73,5 +44,5 @@ func (w *TimeOfDayWindow) EndTime(now time.Time) time.Time {
 }
 
 func (w *TimeOfDayWindow) sameDay() bool {
-	return w.Start.Hour <= w.End.Hour
+	return 60*w.Start.Hour+w.Start.Minute <= 60*w.End.Hour+w.End.Minute
 }

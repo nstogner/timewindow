@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"time"
-	"timewindow"
+
+	"github.com/nstogner/timewindow"
 )
 
 func ExampleTimeOfDayWindow() {
