@@ -1,4 +1,4 @@
-module timewindow
+module github.com/nstogner/timewindow
 
 go 1.16
 
