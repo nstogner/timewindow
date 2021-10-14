@@ -19,7 +19,7 @@ func TestTODWeekWindow(t *testing.T) {
 		duration      time.Duration
 		startTime     time.Time
 		endTime       time.Time
-		nextStartTime time.Time
+		followingStartTime time.Time
 	}{
 		{
 			name: "one-hour-plus-one-day-until-window",
@@ -37,7 +37,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      time.Hour + 24*time.Hour,
 			startTime:     time.Date(2000, time.January, 2, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 2, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 9, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 9, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "one-hour-until-window",
@@ -55,7 +55,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      time.Hour,
 			startTime:     time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "on-start",
@@ -73,7 +73,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      0,
 			startTime:     time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "one-hour-after-window",
@@ -92,7 +92,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      13 * time.Hour,
 			startTime:     time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 2, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 2, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "two-hours-into-window-of-next-day",
@@ -110,7 +110,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      24*time.Hour - 2*time.Hour,
 			startTime:     time.Date(2000, time.January, 2, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 2, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 9, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 9, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "one-hour-within-window",
@@ -128,7 +128,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      24*7*time.Hour - 1*time.Hour,
 			startTime:     time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "on-end",
@@ -146,7 +146,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      7*24*time.Hour - 10*time.Hour,
 			startTime:     time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "one-hour-after-end",
@@ -164,7 +164,7 @@ func TestTODWeekWindow(t *testing.T) {
 			duration:      7*24*time.Hour - 11*time.Hour,
 			startTime:     time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:       time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
-			nextStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
+			followingStartTime: time.Date(2000, time.January, 8, 10, 0, 0, 0, time.UTC),
 		},
 	}
 
@@ -174,7 +174,7 @@ func TestTODWeekWindow(t *testing.T) {
 
 			require.Equal(t, c.startTime.String(), c.window.StartTime(c.now).String())
 			require.Equal(t, c.endTime.String(), c.window.EndTime(c.now).String())
-			require.Equal(t, c.nextStartTime.String(), c.window.NextStartTime(c.now).String())
+			require.Equal(t, c.followingStartTime.String(), c.window.FollowingStartTime(c.now).String())
 
 			withinWindow, untilStart := c.window.WithinWindow(c.now)
 			require.Equal(t, c.withinWindow, withinWindow)

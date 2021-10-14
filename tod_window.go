@@ -27,14 +27,14 @@ type TODWindow struct {
 // WithinWindow returns true if within the window. It also returns the time until
 // the next window.
 func (w *TODWindow) WithinWindow(now time.Time) (bool, time.Duration) {
-	return WithinWindow(now, w.StartTime(now), w.EndTime(now), w.NextStartTime(now))
+	return WithinWindow(now, w.StartTime(now), w.EndTime(now), w.FollowingStartTime(now))
 }
 
 func (w *TODWindow) StartTime(now time.Time) time.Time {
 	return time.Date(now.Year(), now.Month(), now.Day(), w.Start.Hour, w.Start.Minute, 0, 0, now.Location())
 }
 
-func (w *TODWindow) NextStartTime(now time.Time) time.Time {
+func (w *TODWindow) FollowingStartTime(now time.Time) time.Time {
 	return time.Date(now.Year(), now.Month(), now.Day(), w.Start.Hour, w.Start.Minute, 0, 0, now.Location()).Add(24 * time.Hour)
 }
 

@@ -33,7 +33,7 @@ type TODWeekWindow struct {
 // WithinWindow returns true if within the window. It also returns the time until
 // the next window.
 func (w *TODWeekWindow) WithinWindow(now time.Time) (bool, time.Duration) {
-	within, until := WithinWindow(now, w.StartTime(now), w.EndTime(now), w.NextStartTime(now))
+	within, until := WithinWindow(now, w.StartTime(now), w.EndTime(now), w.FollowingStartTime(now))
 	return within, until
 }
 
@@ -41,7 +41,7 @@ func (w *TODWeekWindow) StartTime(now time.Time) time.Time {
 	return w.accountForWeekday(time.Date(now.Year(), now.Month(), now.Day(), w.Start.Hour, w.Start.Minute, 0, 0, now.Location()))
 }
 
-func (w *TODWeekWindow) NextStartTime(now time.Time) time.Time {
+func (w *TODWeekWindow) FollowingStartTime(now time.Time) time.Time {
 	return w.accountForWeekday(w.StartTime(now).Add(24 * time.Hour))
 }
 
