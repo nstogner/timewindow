@@ -1,9 +1,56 @@
 package timewindow
 
 import (
+	"fmt"
 	"sort"
+	"strings"
 	"time"
 )
+
+var strToWeekday = map[string]time.Weekday{
+	"sunday": time.Sunday,
+	"sun":    time.Sunday,
+	"su":     time.Sunday,
+
+	"monday": time.Monday,
+	"mon":    time.Monday,
+	"mo":     time.Monday,
+
+	"tuesday": time.Tuesday,
+	"tues":    time.Tuesday,
+	"tue":     time.Tuesday,
+	"tu":      time.Tuesday,
+
+	"wednesday": time.Wednesday,
+	"wed":       time.Wednesday,
+	"we":        time.Wednesday,
+
+	"thursday": time.Thursday,
+	"thurs":    time.Thursday,
+	"thur":     time.Thursday,
+	"thu":      time.Thursday,
+	"th":       time.Thursday,
+
+	"friday": time.Friday,
+	"fri":    time.Friday,
+	"fr":     time.Friday,
+
+	"saturday": time.Saturday,
+	"sat":      time.Saturday,
+	"sa":       time.Saturday,
+}
+
+func ParseWeekdays(daysOfWeek []string) (Weekdays, error) {
+	wds := make(Weekdays)
+	for _, d := range daysOfWeek {
+		wd, ok := strToWeekday[strings.TrimSpace(strings.ToLower(d))]
+		if !ok {
+			return nil, fmt.Errorf("unrecognized weekday: %s", d)
+		}
+		wds[wd] = true
+	}
+	return wds, nil
+}
 
 type Weekdays map[time.Weekday]bool
 

@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTimeOfDayWindow(t *testing.T) {
+func TestTODWindow(t *testing.T) {
 	cases := []struct {
 		name string
 
-		window TimeOfDayWindow
+		window TODWindow
 		now    time.Time
 
 		withinWindow bool
@@ -22,9 +22,9 @@ func TestTimeOfDayWindow(t *testing.T) {
 	}{
 		{
 			name: "one-hour-until-same-day-window",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 20, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 20, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 9, 0, 0, 0, time.UTC),
 
@@ -36,9 +36,9 @@ func TestTimeOfDayWindow(t *testing.T) {
 		},
 		{
 			name: "one-hour-until-non-same-day-window",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 8, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 8, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 9, 0, 0, 0, time.UTC),
 
@@ -50,23 +50,23 @@ func TestTimeOfDayWindow(t *testing.T) {
 		},
 		{
 			name: "one-hour-within-same-day-window",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 20, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 20, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 11, 0, 0, 0, time.UTC),
 
 			withinWindow: true,
-			duration:     -1 * time.Hour,
+			duration:     23 * time.Hour,
 			sameDay:      true,
 			startTime:    time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:      time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "one-hour-after-same-day-window",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 20, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 20, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 21, 0, 0, 0, time.UTC),
 
@@ -78,23 +78,23 @@ func TestTimeOfDayWindow(t *testing.T) {
 		},
 		{
 			name: "one-hour-within-non-same-day-window",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 8, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 8, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 11, 0, 0, 0, time.UTC),
 
 			withinWindow: true,
-			duration:     -1 * time.Hour,
+			duration:     23 * time.Hour,
 			sameDay:      false,
 			startTime:    time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:      time.Date(2000, time.January, 2, 8, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "one-hour-after-non-same-day-window",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 3, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 3, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 6, 0, 0, 0, time.UTC),
 
@@ -106,9 +106,9 @@ func TestTimeOfDayWindow(t *testing.T) {
 		},
 		{
 			name: "on-start",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 20, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 20, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 
@@ -120,23 +120,23 @@ func TestTimeOfDayWindow(t *testing.T) {
 		},
 		{
 			name: "on-end",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 20, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 20, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
 
 			withinWindow: false,
-			duration:     24 * time.Hour,
+			duration:     14 * time.Hour,
 			sameDay:      true,
 			startTime:    time.Date(2000, time.January, 1, 10, 0, 0, 0, time.UTC),
 			endTime:      time.Date(2000, time.January, 1, 20, 0, 0, 0, time.UTC),
 		},
 		{
 			name: "20-minutes-before",
-			window: TimeOfDayWindow{
-				Start: TimeOfDay{Hour: 10, Minute: 0},
-				End:   TimeOfDay{Hour: 20, Minute: 0},
+			window: TODWindow{
+				Start: TOD{Hour: 10, Minute: 0},
+				End:   TOD{Hour: 20, Minute: 0},
 			},
 			now: time.Date(2000, time.January, 1, 9, 40, 0, 0, time.UTC),
 

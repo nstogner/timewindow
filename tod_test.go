@@ -6,35 +6,35 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseTimeOfDayHappyPath(t *testing.T) {
+func TestParseTODHappyPath(t *testing.T) {
 	cases := []struct {
 		s   string
-		tod TimeOfDay
+		tod TOD
 	}{
 		{
 			s:   "00:00",
-			tod: TimeOfDay{Hour: 0, Minute: 0},
+			tod: TOD{Hour: 0, Minute: 0},
 		},
 		{
 			s:   "01:02",
-			tod: TimeOfDay{Hour: 1, Minute: 2},
+			tod: TOD{Hour: 1, Minute: 2},
 		},
 		{
 			s:   "11:22",
-			tod: TimeOfDay{Hour: 11, Minute: 22},
+			tod: TOD{Hour: 11, Minute: 22},
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.s, func(t *testing.T) {
-			tod, err := ParseTimeOfDay(c.s)
+			tod, err := ParseTOD(c.s)
 			require.NoError(t, err)
 			require.Equal(t, c.tod, tod)
 		})
 	}
 }
 
-func TestParseTimeOfDaySadPath(t *testing.T) {
+func TestParseTODSadPath(t *testing.T) {
 	cases := []struct {
 		name    string
 		s       string
@@ -68,8 +68,8 @@ func TestParseTimeOfDaySadPath(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		t.Run(c.s, func(t *testing.T) {
-			_, err := ParseTimeOfDay(c.s)
+		t.Run(c.name, func(t *testing.T) {
+			_, err := ParseTOD(c.s)
 			require.Contains(t, err.Error(), c.errText)
 		})
 	}
