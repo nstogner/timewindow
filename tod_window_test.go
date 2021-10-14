@@ -14,7 +14,10 @@ func ExampleTODWindow() {
 		log.Fatal(err)
 	}
 
-	within, untilStart := window.WithinWindow(time.Now())
+	now := time.Now()
+	fmt.Println("now: ", now)
+
+	within, untilStart := window.WithinWindow(now)
 	fmt.Println("within: ", within)
 	fmt.Println("untilStart: ", untilStart)
 }
