@@ -29,10 +29,10 @@ func ParseTOD(s string) (TOD, error) {
 		return TOD{}, fmt.Errorf("%s: parsing minute: %w", invalidErr, err)
 	}
 
-	if hour < 0 || hour >= 24 {
+	if hour < 0 || hour > 23 {
 		return TOD{}, fmt.Errorf("invalid hour: %v", hour)
 	}
-	if minute < 0 || minute >= 60 {
+	if minute < 0 || minute > 59 {
 		return TOD{}, fmt.Errorf("invalid minute: %v", minute)
 	}
 
