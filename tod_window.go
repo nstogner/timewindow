@@ -26,7 +26,7 @@ type TODWindow struct {
 
 // WithinWindow returns true if within the window. It also returns the time until
 // the next window.
-func (w *TODWindow) WithinWindow(now time.Time) (bool, time.Duration) {
+func (w *TODWindow) WithinWindow(now time.Time) WindowResult {
 	return WithinWindow(now, w.StartTime(now), w.EndTime(now), w.FollowingStartTime(now))
 }
 
