@@ -14,6 +14,7 @@ func ExampleTODWindow() {
 		log.Fatal(err)
 	}
 
+	// NOTE: Time in playground (docs) is fixed.
 	now := time.Now()
 	fmt.Println("now: ", now)
 
