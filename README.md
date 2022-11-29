@@ -4,7 +4,7 @@ Library for working with time windows in Go. It was created with the use case of
 
 See [example](./tod_week_window_test.go).
 
-https://pkg.go.dev/github.com/nstogner/timewindow
+See [docs](https://pkg.go.dev/github.com/nstogner/timewindow).
 
 ## Credits
 
